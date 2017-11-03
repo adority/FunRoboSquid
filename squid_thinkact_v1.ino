@@ -40,6 +40,13 @@ const int VALVE1 = 10; //right valve
 const int VALVE2 = 11; //left valve
 const int STOP = 4; //pin to determine estop for interrupt
 
+Servo FIN1,FIN2,TUBE1,TUBE2; //Servo objects to set up
+
+//Constants
+const int finCenter = 90;
+const int tubeBent = 180;
+const int tubeStraight = 0;
+
 //DC motor
 Adafruit_DCMotor *pump = AFMS.getMotor(1); //create bilge pump DC motor plugged into motor shield
 
@@ -80,6 +87,44 @@ void loop() {
 
   //THINK
   //ACT
+          
+//TODO attach tube servos in setup
+
+  switch(instruction) {
+
+    case 0: //eStop
+    break;
+    case 1: //Follow direction
+    break;
+    case 2: //STRAIGHT
+    digitalWrite(VALVE1, HIGH);
+    digitalWrite(VALVE2, HIGH);
+    TUBE1.write(tubeStraight);
+    TUBE2.write(tubeStraight);
+    FIN1.write(finCenter + function(timer));
+    FIN2.write(finCenter + function(timer));
+    break;
+    case 3: //LEFT
+    digitalWrite(VALVE1, HIGH);
+    digitalWrite(VALVE2, HIGH);
+    TUBE1.write(tubeBent);
+    TUBE2.write(tubeStraight);
+    FIN1.write(finCenter);
+    FIN2.write(finCenter + function(timer));
+    break;
+    case 4: //NONE
+    digitalWrite(VALVE1, LOW);
+    digitalWrite(VALVE2, LOW);
+    TUBE1.write(tubeBent);
+    TUBE2.write(tubeBent);
+    FIN1.write(finCenter);
+    FIN2.write(finCenter);
+    break;
+    case 5: //systemCheck
+    break;
+    //TODO: create wing motion function and set up timer
+
+}
 }
 
 //CONTROL FUNCTIONS CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
